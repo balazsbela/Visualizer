@@ -31,6 +31,7 @@ my $app = SDLx::App->new(
     dt     => 0.01,
 );
 
+#First parameter defines fullscreen mode
 my $fscreen = $ARGV[0] || 0;
 
 if($fscreen) {
@@ -86,9 +87,6 @@ my $current_music_callback = sub {
         @stream_data = ();
     }
 
-    # To show the right amount of lines we choose a cut of the stream
-    # this is purely for asthetic reasons.
-
     my $N = 512;
     my $cut = $#stream / 512;    
 
@@ -140,41 +138,26 @@ my $current_music_callback = sub {
 				$val = 0;
 			}
 			$freq->[$i] = $val;
-		}
+    }
 
 
+    my $k = 20;
     my $red;
     my $green;
-    my $blue;
-    my $k = 20;
+    my $base_y = $app->h() / 2 + 125;
     for(my $i=0;$i < 16;$i++) {
- 
-	if(($i>=0) && ($i <5)) {
-	    $red = 255 - ($i*$k);
-	    $green = 0;
-	    $blue = 0;
-	}
-	else {
-	    if(($i>=5) && ($i<11)) {
-	       $red = 0;
-	       $green = 255 - ($i*$k/$i);
-	       $blue = 0;
-	    }
-	    else {
-	       $red = 0;
-	       $green = 0;
-	       $blue =  255 - ($i*$k/$i);
-	    }
-	}
-	
+        
+	$green = ($i*(1.0/15)) * 255;
+        $red = 255 - $green ;
+
         # Using the parameters
-        #   Surface, box coordinates and color as RGBA
+        # Surface, box coordinates and color as RGBA
         SDL::GFX::Primitives::box_RGBA(
             $app,
             35 + ($i*80),
-	    500-(($freq->[$i])*500),
+	    $base_y - (($freq->[$i])*500),
             85+($i*80),
-            500,  $red,$green,$blue, 255
+            $base_y, $red,$green,(1.0/15) * 255, 255
         );
        
    }
