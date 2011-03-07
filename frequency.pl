@@ -115,7 +115,7 @@ my $current_music_callback = sub {
     my $coeff = $fft -> cdft();
     my $freq;
     $j = 0;
-    for(my $i=0;$i<512;$i+=2) {
+    for(my $i=0;$i<1024;$i+=2) {
 	$freq -> [$j] = sqrt($coeff->[$i]*$coeff->[$i] + $coeff->[$i+1] * $coeff->[$i+1]); 	
 	$j++;
     }
